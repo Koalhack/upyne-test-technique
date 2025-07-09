@@ -27,6 +27,19 @@ services:
     networks:
       - mysql-phpmyadmin
 
+  app:
+    image: koalhack/user
+    build:
+      context: ./
+      dockerfile: Dockerfile
+    environment:
+      DB_HOST: ${DB_HOST}
+    ports:
+      - "${APP_PORT:-9000}:80"
+    networks:
+      - mysql-phpmyadmin
+
+
 networks:
   mysql-phpmyadmin:
 

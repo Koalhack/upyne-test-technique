@@ -1,0 +1,27 @@
+# Docker
+Dockerfile
+.dockerignore
+docker-compose.yml
+
+# php-cs-fixer
+.php-cs-fixer.cache
+
+# phpcs
+phpcs.xml
+
+# environnement variables
+.env
+.env.example
+
+# composer
+/vendor
+
+# git
+.git
+.gitignore
+
+# DB
+/scripts
+
+# README
+README.md
