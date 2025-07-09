@@ -83,7 +83,10 @@ Dans le cadre de la sécurité, les points suivants seront mis en place.
 - Utilisation des méthodes `prepare()` et `execute()`.
 - Hachage du mot de passe utilisateurs avant sauvegarde sur base de données
 - Utilisation de l'algorithme `bcrypt`
-- Envoi E-mail de sécurité pour valider l'existence du mail
+
+> - Envoi Email de sécurité pour valider l'existence du mail
+>
+> Cette fonctionnalité serait plus facile à mettre en place avec un module comme **PHPMailer**
 
 ## Structure Base de données
 
@@ -97,6 +100,8 @@ La base de données sera donc composée d'une table, utilisateurs (`users`) comp
 | **pass_hash** | CHAR(60) | not null, unique | |
 | **role** | ENUM | not null, default: 'user' | `admin`, `user` |
 | **active** | BOOLEAN | not null, default: 0 | |
+| **created_at** | TIMESTAMP | not null, default: CURRENT_TIMESTAMP | |
+| **updated_at** | TIMESTAMP | not null, default: CURRENT_TIMESTAMP, on update: CURRENT_TIMESTAMP | |
 
 > **INFOS**
 >
@@ -125,3 +130,102 @@ volumes:
 ```
 
 La limite dans ma deadline et mes contraintes a uniquement utiliser PHP 8, je me suis donc tourné vers la solution de **Docker** ainsi que la mise en place d'une image **phpmyadmin** pour des modifications manuel si nécessaire.
+
+### Ajout d'utilisateurs
+
+À cette étape, j'ai pu réaliser l'ajout d'utilisateur de manière _"théorique"_, en utilisant l'utilitaire **PHP**.
+
+```bash
+php app/controllers/UserController.php
+```
+
+J'ai géré les erreurs suivantes :
+
+```stderr
+Deprecated: PHP Startup: session.sid_length INI setting is deprecated in Unknown on line 0
+PHP Deprecated:  PHP Startup: session.sid_bits_per_character INI setting is deprecated in Unknown on line 0
+```
+
+Après quelques recherches, j'avais trouvé la [solution](https://suay.site/?p=4994)
+
+Il suffit de modifier le fichier `php.ini` en commentant les lignes
+
+```ini
+;session.sid_length =
+;session.sid_bits_per_character =
+```
+
+> J'ai profité de l'occasion pour activer l'extension `pdo_mysql`
+>
+> ```
+> extension=pdo_mysql
+> ```
+
+La suite n'aura pas causé de problème particulier durant le développement.
+
+J'ai principalement eu des problèmes via le système d'_"autoload"_ de `composer` qui m'aura causé quelques ennuis jusqu'au moment ou je me suis souvenu qu'il fallait charger le fichier `autoload.php`:
+
+```php
+require __DIR__ . '/vendor/autoload.php';
+```
+
+Je n'avais jamais eu à le faire avec **Laravel** ou **Symfony**.
+
+>```bash
+>composer dump-autoload
+>```
+
+Avec ces quelques modifications, j'ai modifié la structure du projet (tout en gardant l'architecture **MVC**).
+
+```text
+/upyne-test-technique/
+├── config/
+│   └── database.php
+├── app/
+│   ├── core/
+│   ├── controllers/
+│   └── models/
+└── index.php
+```
+
+### Validation des données et messages d'erreurs
+
+Cette partie n'aura pas été particulièrement compliquée.
+J'ai créé une classe `Validator` afin que toutes les vérifications des différentes entrées utilisateur et la gestion des messages d'erreurs du formulaire utilisateur puisse être au même endroit plutôt que disperser dans le code et mal organisé.
+
+### Création de l'interface utilisateur
+
+Pour la partie de l'interface utilisateur, pour cela, j'ai d'abord réalisé un formulaire **HTML/CSS** très simple afin de me concentré sur le **PHP**.
+
+Après cela, j'ai utilisé **ChatGPT** afin qu'il me génère un formulaire, utilisateurs ayant une meilleure apparence, il ne restait que quelques modifciations à faire pour correctement fonctionner avec le système et le problème était résolue.
+
+### Vérification de l'existence d'un utilisateur
+
+Pour cette section rien de bien compliquer, j'ai créé une classe étendue `UserValidtor` de la classe `Validator` afin d'ajouter la gestion des potentiels compte `username` ou `email` qui existerais déjà.
+
+## Utilisation
+
+Pour mettre en place ce petit projet rapidement par sois même, le plus rapide est d'utiliser **Docker**:
+
+1. Cloner le dépôt Github
+
+```bash
+git clone https://github.com/Koalhack/upyne-test-technique.git
+```
+
+2. Lancer la commande `docker compose` suivante :
+
+```bash
+docker-compose --env-file .env.example up --build -d
+```
+
+> **Attention**
+>
+> Ce test était à réaliser sans aucun framework ou module, j'ai donc été contraint de stocker les informations de connexion de la base de données dans le fichier `config/database.php`.
+> Si vous modifiez le fichier de variables d'environnement, il faudra aussi modifier les valeurs de ce fichier.
+
+## Roadmap
+
+- [ ] Ajouter commentaires et PHPdoc
+- [ ] Mettre en place un système de _"routes"_
+- [ ] Améliorer la sécurité (email, `.htaccess`)
