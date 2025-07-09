@@ -1,0 +1,8 @@
+# php-cs-fixer
+.php-cs-fixer.cache
+
+# environnement variables
+.env
+
+# composer
+/vendor

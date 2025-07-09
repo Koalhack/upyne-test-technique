@@ -1,0 +1,19 @@
+{
+  "name": "koalhack/upyne-test-technique",
+  "description": "a simple users creation form",
+  "type": "project",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Koalhack",
+      "email": "33071384+Koalhack@users.noreply.github.com"
+    }
+  ],
+  "require": {},
+  "autoload": {
+    "psr-4": {
+      "App\\": "app/",
+      "Config\\": "config/"
+    }
+  }
+}
