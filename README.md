@@ -106,3 +106,22 @@ La base de données sera donc composée d'une table, utilisateurs (`users`) comp
 > - Le champ `role` utilise le type `enum` afin de limité le nombre de possibilités, mais en restant suffisamment flexible pour de futurs autres rôles (modérateur, ...).
 
 ## Développement
+
+### Gestion de la base de données
+
+Une fois, le développement lancé, la première chose que je devais faire était configurer la base de données, pour cela, je savais que j'allais utiliser **Docker** et **Docker Compose** afin de facilement gérer la configuration et création de la base de données via les variables d'environnement.
+
+Mais il restait un autre point à élucider, comment gérer la création et possible modification de la table.
+Dans ce genre de cas, je ne connais que deux méthodes :
+
+1. Le faire manuellement via de simple requête **SQL**
+2. Utiliser un outil **ORM** qui s'en charge pour moi
+
+Après recherche, il était aussi possible d'initialiser la base de données avec des fichiers `.sql` custom via `docker-entrypoint-initdb.d`
+
+```yaml
+volumes:
+- ./init.sql:/docker-entrypoint-initdb.d/init.sql
+```
+
+La limite dans ma deadline et mes contraintes a uniquement utiliser PHP 8, je me suis donc tourné vers la solution de **Docker** ainsi que la mise en place d'une image **phpmyadmin** pour des modifications manuel si nécessaire.
