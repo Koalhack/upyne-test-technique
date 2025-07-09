@@ -3,7 +3,7 @@
 namespace App\Controllers;
 
 use App\Models\User;
-use App\Services\Validator;
+use App\Services\UserValidator;
 use Config\Database;
 
 class UserController
@@ -22,7 +22,7 @@ class UserController
                 'passwordConfirm' => trim($_POST['passwordConfirm'])
             );
 
-            $this->validate = new Validator();
+            $this->validate = new UserValidator();
 
             $this->validate->emptyFields($fields);
             $this->validate->emailFormat($fields["email"]);
@@ -42,6 +42,16 @@ class UserController
                 $user->username = $fields["username"];
                 $user->email = $fields["email"];
                 $user->password = $fields["password"];
+
+                // Verify if user already exist
+                $this->validate->userExist($user, "username");
+                $this->validate->userExist($user, "email");
+                $this->errors = $this->validate->errors;
+
+                if (!empty($this->errors)) {
+                    include 'view/user_form.php';
+                    return;
+                }
 
                 // Create a user
                 $user->create();

@@ -21,14 +21,19 @@ class User extends BaseModel
         $this->table = $this->getTableName();
     }
 
-    public function exist()
+    public function exist($param)
     {
-        $query = sprintf("SELECT COUNT(*) FROM %s WHERE username = :username AND email = :email", $this->table);
+        $param = strtolower($param);
+        // Verify if param exist in $this
+        if (!property_exists($this, $param)) {
+            return;
+        }
+
+        $query = sprintf("SELECT COUNT(*) FROM %s WHERE %s = :%s", $this->table, $param, $param);
         $stmt = $this->conn->prepare($query);
 
         // Linking
-        $stmt->bindParam(":username", $this->username);
-        $stmt->bindParam(":email", $this->email);
+        $stmt->bindParam(sprintf(":%s", $param), $this->$param);
         $stmt->execute();
 
         return $stmt->fetchColumn() > 0;
