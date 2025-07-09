@@ -39,8 +39,6 @@ class User extends BaseModel
         $query = sprintf("INSERT INTO %s (username, email, pass_hash) VALUES (:username, :email, :pass_hash)", $this->table);
         $stmt = $this->conn->prepare($query);
 
-        print($query);
-
         // Cleanup
         $this->username = htmlspecialchars(strip_tags($this->username));
         $this->email = htmlspecialchars(strip_tags($this->email));
