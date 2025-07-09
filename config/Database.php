@@ -7,12 +7,20 @@ use PDO;
 class Database
 {
     //TODO: Replace hard value by .env file (can't use phpdotenv module)
-    private $host = "localhost";
-    private $dbName = "db";
-    private $user = "upyne";
-    private $pass = "123456";
+    private $host;
+    private $dbName;
+    private $user;
+    private $pass;
 
     public $conn;
+
+    public function __construct()
+    {
+        $this->host = getenv('DB_HOST', true) ?: "localhost";
+        $this->dbName = "db";
+        $this->user = "upyne";
+        $this->pass = "123456";
+    }
 
     public function connect()
     {
