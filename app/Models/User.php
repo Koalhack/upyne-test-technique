@@ -44,9 +44,9 @@ class User extends BaseModel
     public function exist(string $param): bool
     {
         $param = strtolower($param);
-        // Verify if param exist in $this
+        // Verify if param exist in $this, if not replace by default param ("username").
         if (!property_exists($this, $param)) {
-            return;
+            $param = "username";
         }
 
         $query = sprintf("SELECT COUNT(*) FROM %s WHERE %s = :%s", $this->table, $param, $param);
