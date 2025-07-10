@@ -1,11 +1,11 @@
 <?php
 
 // ╭────────────────────────────────────────────────────────────────────────────────╮
-// │   TODO: Add PHPDoc to all classes                                              │
-// │   TODO: Add PHPDoc to all methods                                              │
 // │   TODO: Replace hard value by constant                                         │
-// │   TODO: define return value for all methods                                    │
-// │   TODO: add better rooting                                                     │
+// │   TODO: Define return value for all methods                                    │
+// │   TODO: Add better rooting                                                     │
+// │   TODO: Add PHPDoc for certain variable                                        │
+// │   TODO: Add interfaces for better respect of Dependency inversion principle    │
 // ╰────────────────────────────────────────────────────────────────────────────────╯
 
 // Register the Composer autoloader...
