@@ -48,6 +48,7 @@ class UserController
                 $this->validate->userExist($user, "email");
                 $this->errors = $this->validate->errors;
 
+                //TODO: Better view/routes handler
                 if (!empty($this->errors)) {
                     include 'view/user_form.php';
                     return;
