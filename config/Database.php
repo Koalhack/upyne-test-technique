@@ -2,9 +2,10 @@
 
 namespace Config;
 
+use Config\Interfaces\DBConnectionInterface;
 use PDO;
 
-class Database
+class Database implements DBConnectionInterface
 {
     //TODO: Replace hard value by .env file (can't use phpdotenv module)
     private $host;
