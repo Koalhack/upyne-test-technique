@@ -10,7 +10,7 @@ class Validator
     {
         foreach ($fields as $key => $value) {
             if (empty($value)) {
-                $this->errors[$key] = "this field is required.";
+                $this->errors[$key] = "This field is required.";
             }
         }
     }
@@ -29,7 +29,7 @@ class Validator
 
         $passwordLength = strlen($password);
         if ($passwordLength > MAX_BCRYPT_PASSWORD || $passwordLength < MIN_PASSWORD) {
-            $this->errors["passwordLength"] = "Password size must be between 6 and 72 characters.";
+            $this->errors["passwordLength"] = sprintf("Password must contain at least %d characters (max %d).", MIN_PASSWORD, MAX_BCRYPT_PASSWORD);
         }
     }
 
