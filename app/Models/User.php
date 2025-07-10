@@ -3,7 +3,15 @@
 namespace App\Models;
 
 use App\Core\BaseModel;
+use PDO;
 
+/**
+ * Class User
+ *
+ * Represents a user in the table.
+ *
+ * @package App\Models
+ */
 class User extends BaseModel
 {
     private $conn;
@@ -15,13 +23,25 @@ class User extends BaseModel
     public $password;
     private $pass_hash;
 
-    public function __construct($db)
+    /**
+    * Init User class.
+    *
+    * @param PDO $db
+    */
+    public function __construct(PDO $db)
     {
         $this->conn = $db;
         $this->table = $this->getTableName();
     }
 
-    public function exist($param)
+    /**
+     * Checks if user already exist based on $param.
+     *
+     * @param string $param User class param
+     *
+     * @return bool True if exist, false otherwise.
+     */
+    public function exist(string $param): bool
     {
         $param = strtolower($param);
         // Verify if param exist in $this
@@ -39,7 +59,10 @@ class User extends BaseModel
         return $stmt->fetchColumn() > 0;
     }
 
-    public function create()
+    /**
+    * Insert a new user into the database.
+    */
+    public function create(): bool
     {
         $query = sprintf("INSERT INTO %s (username, email, pass_hash) VALUES (:username, :email, :pass_hash)", $this->table);
         $stmt = $this->conn->prepare($query);

@@ -6,11 +6,21 @@ use App\Models\User;
 use App\Services\UserValidator;
 use Config\Database;
 
+/**
+ * Class UserController
+ *
+ * Make the link between the view and the model for the User class.
+ *
+ * @package App\Controllers
+ */
 class UserController
 {
     private $validate;
     private $errors;
 
+    /**
+    * Manage the user creation (Datas validation, DB and user view).
+    */
     public function createUser()
     {
         if ($_SERVER["REQUEST_METHOD"] === 'POST') {

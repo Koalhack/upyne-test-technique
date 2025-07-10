@@ -2,7 +2,14 @@
 
 namespace Config\Interfaces;
 
+use PDO;
+
 interface DBConnectionInterface
 {
-    public function connect();
+    /**
+     * Establishes and returns a PDO connection.
+     *
+     * @return PDO The PDO connection instance.
+     */
+    public function connect(): PDO;
 }

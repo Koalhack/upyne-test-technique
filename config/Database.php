@@ -5,6 +5,13 @@ namespace Config;
 use Config\Interfaces\DBConnectionInterface;
 use PDO;
 
+/**
+ * Class Database
+ *
+ * Manage database connetion.
+ *
+ * @package Config
+ */
 class Database implements DBConnectionInterface
 {
     //TODO: Replace hard value by .env file (can't use phpdotenv module)
@@ -15,6 +22,9 @@ class Database implements DBConnectionInterface
 
     public $conn;
 
+    /**
+    * Define the required database infos
+    */
     public function __construct()
     {
         $this->host = getenv('DB_HOST', true) ?: "localhost";
@@ -23,7 +33,12 @@ class Database implements DBConnectionInterface
         $this->pass = "123456";
     }
 
-    public function connect()
+    /**
+     * Establishes and returns a PDO connection.
+     *
+     * @return PDO The PDO connection instance.
+     */
+    public function connect(): PDO
     {
         $this->conn = null;
         try {
